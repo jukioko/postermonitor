@@ -1,0 +1,187 @@
+/*
+Jeroen van Oorschot 2015
+CSS file for Thor Postermonitor, posterviewer
+*/
+html,body{
+	margin:0px;
+	padding:0px;
+	height:100%;
+	overflow:hidden;
+	position: relative;	
+}
+body{
+	font-family: 'segoe ui semibold','Trebuchet MS',Verdana, Geneva, sans-serif;
+	font-size:11px; /*relative font size of all texts*/
+	background-color:#ac2121;
+}
+/*
+div{
+		border: 1px solid blue;
+}*/
+/*element blocks*/
+div#container{ 
+	position: absolute;
+	top: 10px;
+	bottom: 10px;
+	left: 10px;
+	right:10px;
+}
+
+/***************
+Posters
+***************/
+div#posterview{
+	position: absolute;
+	right:0px;
+	top: 0px;
+	left:calc(20% + 10px);
+	bottom:20%;
+	overflow:hidden;
+	/*border-radius:10px;*/
+	background: #a7a7a7;
+}
+img#posterimage{
+	position:absolute;
+/*	top: 50%;
+	left: 50%;
+    transform: translate(-50%, -50%);*/
+	overflow:hidden;
+}
+
+/***************
+Thumbs, sponsors or posterthumbs
+***************/
+div#thumbbar{/*footer*/
+	position:absolute;
+	bottom:0px;
+	right: 0px;
+	left: calc(20% + 10px);
+	top: calc(80% + 10px);/**/
+	padding-left: 1.5em;
+	background-color: white;/*white;/*#f7f7f7;	*/
+	/*overflow:hidden;
+	border-radius:10px;*/
+}
+
+/*a block that contains the image of a sponsor*/
+
+div.sponsorblock{
+	position:relative;
+	
+/*	display: block;
+	float:left;*/
+	height:123px;
+	width:350px;
+	
+}
+img.sponsor{ /* a sponsor image*/
+	position:absolute;
+	
+	/*top: 50%;
+	left: 50%;
+	bottom: 50%;
+	right: 50%;*/
+	
+	max-height: 95%;
+	max-width: 95%;
+
+   /* transform: translate(-50%, -50%);*/
+}
+/*pager for posterthumbs should be red instead of blue*/
+.active > a{
+    background-color: #ac2121!important;
+}
+/***************
+Activity
+***************/
+/*sidebar contains clock and activities*/
+div#sidebar{
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	top: 0px;
+	right: 80%;
+}
+div#general{
+	position:absolute;
+	left:0px;
+	top:calc(80% + 10px);
+	right: 0px;
+	bottom: 0px;
+	padding: 0.5em;
+	/*border-radius: 1em;*/
+	background: #a7a7a7;
+	color: #333;
+}
+#time, #daydate{
+	padding-top:2em;
+	position:absolute;
+	width: 45%;
+	height: 99%;
+	font-weight:bold;
+}
+#time{
+	left:0px;
+}
+#daydate{
+	right:0px;
+}
+#day, #date{
+	font-size:1.5em;
+	width: 100%;
+}
+/*clock*/
+canvas#clock{
+	position: absolute;
+	top:0px;
+	left: 0px;
+	/*right: 0px;
+	bottom:0px;
+	display:block;
+	height:100%;*/
+
+}
+
+/*the activities*/
+div#activities{
+	position:absolute;
+	left:0px;
+	bottom:20%;
+	right: 0px;
+	top:0px;
+	background-color:#a7a7a7;
+	overflow:hidden;
+	padding: 0.5em;
+	/*border-radius:10px;*/
+/*	color: #aaa;*/
+}
+
+/*some spacing between activities*/
+div.activity{
+	margin-bottom: 0.5em;
+}
+/* activity title*/
+h2{
+	word-wrap:break-word;
+	color: #ac2121;	
+	font-size: 2em;
+	font-weight: bold;
+	display:inline;
+	/*text-shadow: -0.02em 0.02em 0.4em #FFF;*/
+}
+/* activity date*/
+h3{
+	font-size: 1.5em;
+	margin: 0px;
+	margin-left: 1em;
+	color: #333;
+}
+/*ieee activity*/
+div.activity.ieee > h2{
+	color: rgb(0,83,159);
+}
+/*waldur activity*/
+div.activity.waldur > h2{
+	/*color: rgb(190,151,4);*/
+	color: rgb(255,203,5);/* the official waldur color*/
+}
