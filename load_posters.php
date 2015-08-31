@@ -6,8 +6,8 @@ Gets list of posters and puts it to the client
 */
 if($_GET['Thor']=='gaaf'){
 	if($_GET['type']=='posters'){
-		$location = "./posters/";
-		$filenames = glob($location.'{*.jpg,*.png}', GLOB_BRACE|GLOB_NOSORT);
+		$location = "./upload/";
+		$filenames = glob($location.'{*.jpg,*.png,*.jpeg,*.gif}', GLOB_BRACE|GLOB_NOSORT);
 		print(json_encode($filenames));
 	}elseif($_GET['type']=='sponsors'){
 		$location = "./posters/sponsors/";
@@ -19,4 +19,3 @@ if($_GET['Thor']=='gaaf'){
 }else{
 	print("You are not allowed to view this page");
 }
-?>

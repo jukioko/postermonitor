@@ -11,11 +11,14 @@ function initClock(){
  radius = canvas.height / 2;
  ctx.translate(radius, radius);
  radius = radius * 0.90
- window.setInterval(drawClock, 1000);
+ window.setInterval(drawClock, 60*1000);
  img = new Image();
  img.src = 'thorlogo2.png'; 
+//start drawing the clock after some delay, to have time to load the thorlogo image.
+ setTimeout(function(){
+	 drawClock();
+	 }, 1250);
 }
-
 
 function drawClock() {
     drawFace(ctx, radius);
@@ -45,8 +48,8 @@ function drawTime(ctx, radius){
     drawHand(ctx, minute, radius*0.8, radius*0.07);
     
 	// second
-    second=(second*Math.PI/30);
-    drawHand(ctx, second, radius*0.9, radius*0.02);
+    //second=(second*Math.PI/30);
+    //drawHand(ctx, second, radius*0.9, radius*0.02);
 }
 
 function drawHand(ctx, pos, length, width) {

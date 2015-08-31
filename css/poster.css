@@ -30,23 +30,28 @@ div#container{
 /***************
 Posters
 ***************/
-div#posterview{
+div.poster{
 	position: absolute;
 	right:0px;
 	top: 0px;
-	left:calc(20% + 10px);
+	left:20%;/*calc(20% + 10px);*/
 	bottom:20%;
 	overflow:hidden;
 	/*border-radius:10px;*/
 	background: #a7a7a7;
 }
+div.posterview{
+	background-size:contain;
+	background-repeat:no-repeat;
+}
+/*
 img#posterimage{
 	position:absolute;
 /*	top: 50%;
 	left: 50%;
     transform: translate(-50%, -50%);*/
-	overflow:hidden;
-}
+/*	overflow:hidden;
+}*/
 
 /***************
 Thumbs, sponsors or posterthumbs
@@ -55,8 +60,8 @@ div#thumbbar{/*footer*/
 	position:absolute;
 	bottom:0px;
 	right: 0px;
-	left: calc(20% + 10px);
-	top: calc(80% + 10px);/**/
+	left: 20%;/*calc(20% + 10px);*/
+	top: 80%;/*calc(80% + 10px);*/
 	padding-left: 1.5em;
 	background-color: white;/*white;/*#f7f7f7;	*/
 	/*overflow:hidden;
@@ -105,7 +110,7 @@ div#sidebar{
 div#general{
 	position:absolute;
 	left:0px;
-	top:calc(80% + 10px);
+	top:80%;/*calc(80% + 10px);*/
 	right: 0px;
 	bottom: 0px;
 	padding: 0.5em;

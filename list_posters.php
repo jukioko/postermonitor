@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!--
+Jeroen van Oorschot 2015
+e.t.s.v. Thor Eindhoven posterviewer
+-->
+<script type="text/javascript" src="./js/jquery-2.1.3.min.js"></script>
+
+<title>PromoniThor Manage | List</title>
+<style type="text/css">
+html,body{
+	font-family: Verdana, Geneva, sans-serif;
+}
+img{
+	max-width:200px;
+	max-height:200px;
+}
+button.delete{
+	color: red;
+}
+table{
+	border-collapse:collapse;
+	margin-top: 10px;
+}
+th,tr,td{
+	padding: 10px;
+	border: 1px solid black;		
+}
+</style>
+</head>
+
+<body class="metro">
+<h1>PromoniThor Manage</h1>
+
+<a href="index.php" title="Show posterviewer">Show posterviewer</a>
+<br />
+<a href="upload_poster.php" title="upload">Upload a new poster</a>
+<h2>List of current posters</h2>
+<button onclick="loadPosters()">Refresh</button>
+<table>
+<thead>
+<tr><th>Name</th><th>Start</th><th>End</th><th>Preview</th><th>Delete</th></tr>
+</thead>
+<tbody id="postertable">
+</tbody>
+</table>
+<script type="text/javascript">
+var posters = [];
+function loadPosters(){
+	//update the array containing the poster objects
+	$.getJSON('load_posters.php', {Thor:"gaaf",type:"posters"} , function (data){
+		//empty old array
+		posters = [];
+		//fill array poster by poster
+		//filename equals "enddate','title','timeadded'.'extension"
+		$.each(data, function(key, val){
+			var loc = val;
+			var parts = loc.split('/');
+			var folder = parts[1];
+			var fullname = parts[2];
+			
+			parts = fullname.split(',');
+			name = parts[1];
+			end = parts[0];
+			parts = parts[2].split('.');
+			start = parts[0];
+			extension = parts[1];
+				posters.push({
+					fullname: fullname,
+					name: name,
+					start: start,
+					end: end,
+					loc: loc
+				});
+		});
+	
+		var html = '';
+	//update the view
+		if(posters.length == 0){
+			html = "No posters yet";
+		}else{
+			$.each(posters, function(key, val){
+				html += "<tr><td>"+val.name+"</td><td>"+new Date(val.start*1000)+"</td><td>"+val.end+"</td><td><img src='"+val.loc+"' /></td><td><button class=\"delete\" onclick=\"deletePoster('"+val.fullname+"')\">Delete</button></td></tr>";
+			});
+		}
+		$("tbody#postertable").html(html);
+	});
+}
+
+function deletePoster(poster){
+	var passwd = prompt("Remove "+poster+"? Enter password:");
+	if(passwd != null){
+		$.post("delete_poster.php",{poster:poster,password:passwd},function(data){alert(data); loadPosters();});
+	}else{
+		alert("Removing poster cancelled");
+	}
+}
+
+
+$(function(){
+	loadPosters();
+});
+
+</script>
+
+</body>
+</html>

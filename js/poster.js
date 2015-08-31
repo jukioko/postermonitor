@@ -31,6 +31,8 @@ var daysOfWeek = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']; //weeks start at s
 var daysOfWeekFull = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
+
+/*
 //object for a poster
 function poster(filename, ext){
 	this.loc = filename;
@@ -43,7 +45,7 @@ function poster(filename, ext){
 function thumb(filename){
 	this.loc = filename;
 }
-
+*/
 //object for an activity
 function activity(data){
 	this.loc = data.loc;
@@ -53,6 +55,8 @@ function activity(data){
 	this.title = data.tit;
 	this.allday = data.ald;
 }
+
+
 
 /********************/
 /*     posters      */
@@ -66,7 +70,7 @@ function updatePosters(){
 		l = posters.length;
 		n = (((n+1)%l)+l)%l;
 		//reload array if end is reached. Array will be reloaded before the next poster has to be loaded.
-		if( n == posters.length ){
+		if( n == (posters.length - 1) ){
 			//reload posters at end of cycle if posterReloadTime is false.
 			if(posterReloadTime == false) {loadPosters()}
 			n = 0;
@@ -79,35 +83,26 @@ function updatePosters(){
 function updatePoster(posterNr){
 	var	poster = posters[posterNr];
 	//go to next poster
-	
 	//animate and set width/heigth correct (scaling)
-	$("#posterimage").animate({
+	/*$("#posterview1").animate({
 		opacity: 0
-	},posterRefreshAnimation/2,'',function(){
-	$("#posterimage").attr('src',poster.loc);
-	if(poster.img.width > 16/9*poster.img.height){
-		$("#posterimage").css('width',$("#posterview").width());
-		$("#posterimage").css('height','auto');				
-	}else{
-		$("#posterimage").css('height',$("#posterview").height());
-		$("#posterimage").css('width','auto');
-	}
+	},posterRefreshAnimation/2,'',function(){*/
+	$("#posterview1").css('background-image','url("'+poster.loc+'")');
 
 	//change posters in the bottom if they are used instead of sponsor logo's
 	if(postersInsteadOfSponsors){
 		thumbslider.goToSlide(posterNr);
 	}
-
-
-		$("#posterimage").animate({
+/*		$("#posterview1").animate({
 			opacity: 1
 			},posterRefreshAnimation/2,'');
-	});
+	});*/
 }
 
 //load the list of posters from the server
 function loadPosters(){
 	//update the array containing the poster objects
+	console.log('update');
 	$.getJSON('load_posters.php', {Thor:"gaaf",type:"posters"} , function (data){
 		//empty old array
 		posters = [];
@@ -115,8 +110,9 @@ function loadPosters(){
 		$.each(data, function(key, val){
 			loc = val;
 			ext = loc.split('.').pop();
-				var thisposter = new poster(loc, ext, false);
-				posters.push(thisposter);
+				posters.push({
+					loc: loc
+				});
 		});
 		if(postersInsteadOfSponsors){
 			loadThumbs();		
@@ -139,12 +135,17 @@ function updateActivities(){
 			var a = activities[i].start;
 			html += '<div class="activity ' +  activities[i].association+'" ><h2>'+activities[i].title+'</h2><h3>';
 			if(a != false){
-				html += daysOfWeek[a.getDay()]+' '+a.getDate()+' '+months[a.getMonth()];
+				var astring = daysOfWeek[a.getDay()]+' '+a.getDate()+' '+months[a.getMonth()];
+				html += astring;
 				if(!activities[i].allday){ //non-allday activity, show starttime
 					html += ', ' + a.getHours()+':'+ (a.getMinutes()<10?'0':'') + a.getMinutes();
 				}else{ //allday activity, show endday
 					var e = activities[i].end;
-					html += ' to ' + daysOfWeek[e.getDay()]+' '+e.getDate()+' '+months[e.getMonth()];
+					var estring = daysOfWeek[e.getDay()]+' '+e.getDate()+' '+months[e.getMonth()];
+					if( estring != astring){
+						//only show enddate if it is different from the startdate
+						html += ' to ' + estring;
+					}
 				}
 			}
 			html += '</h3></div>';
@@ -182,8 +183,10 @@ function loadThumbs(){
 	var html = '';
 	if(postersInsteadOfSponsors){
 		$.each(posters, function(key, val){
-			var thisposter = new thumb(val.loc);
-			thumbs.push(thisposter);
+			//var thisposter = new thumb(val.loc);
+			thumbs.push({
+				loc: val.loc
+			});
 			html += '<li><div class="sponsorblock"><img class="sponsor" src="'+val.loc+'" /></div></li>';
 		});
 		$("#thumbcontainer").html(html);
@@ -204,8 +207,10 @@ function loadThumbs(){
 			//fill array sponsor by sponsor
 			$.each(data, function(key, val){
 				console.log(key,val);
-				var thissponsor = new thumb(val);
-				thumbs.push(thissponsor);
+				//var thissponsor = new thumb(val);
+				thumbs.push({
+					loc: val
+				});
 				html += '<li><div class="sponsorblock"><img class="sponsor" src="'+val+'" /></div></li>';
 			});
 			$("#thumbcontainer").html(html);
