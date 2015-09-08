@@ -30,9 +30,9 @@
         galleryMargin: 5,
         thumbMargin: 5,
         currentPagerPosition: 'middle',
-        enableTouch: true,
-        enableDrag: true,
-        freeMove: true,
+        enableTouch: false,//true,
+        enableDrag: false,//true,
+        freeMove: false,//true,
         swipeThreshold: 40,
         responsive: [],
         /* jshint ignore:start */

@@ -271,16 +271,16 @@ $(function(){
 		window.setInterval(function(){ updatePosters(); },posterChangeTime*1000);
 	}
 	//refresh the list of posters periodically
-	if(posterReloadTime){
+	/*if(posterReloadTime){
 		window.setInterval(function(){ loadPosters(); },posterReloadTime*1000);
-	}
+	}*/
 	//refresh the sponsors if they are enabled
-	if(sponsorReloadTime && !postersInsteadOfSponsors){
+	/*if(sponsorReloadTime && !postersInsteadOfSponsors){
 		window.setInterval(function(){ loadThumbs(); },sponsorReloadTime*1000);
-	}
-	if(activityReloadTime){
+	}*/
+	/*if(activityReloadTime){
 		window.setInterval(function(){ loadActivities(); },activityReloadTime*1000);
-	}
+	}*/
 	window.setInterval(function(){ updateDateTime(); },60*1000);
 	
 	
