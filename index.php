@@ -5,7 +5,7 @@
 Jeroen van Oorschot 2015
 e.t.s.v. Thor Eindhoven posterviewer
 -->
-<meta http-equiv="refresh" content="1800">
+<meta http-equiv="refresh" content="3600">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link type="text/css" rel="stylesheet" href="./css/poster.css" />
 <link type="text/css" rel="stylesheet" href="./css/lightslider.css" />

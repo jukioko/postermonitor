@@ -84,19 +84,19 @@ function updatePoster(posterNr){
 	var	poster = posters[posterNr];
 	//go to next poster
 	//animate and set width/heigth correct (scaling)
-	/*$("#posterview1").animate({
+	$("#posterview1").animate({
 		opacity: 0
-	},posterRefreshAnimation/2,'',function(){*/
+	},posterRefreshAnimation/2,'',function(){
 	$("#posterview1").css('background-image','url("'+poster.loc+'")');
 
 	//change posters in the bottom if they are used instead of sponsor logo's
 	if(postersInsteadOfSponsors){
 		thumbslider.goToSlide(posterNr);
 	}
-/*		$("#posterview1").animate({
+		$("#posterview1").animate({
 			opacity: 1
 			},posterRefreshAnimation/2,'');
-	});*/
+	});
 }
 
 //load the list of posters from the server
@@ -271,16 +271,16 @@ $(function(){
 		window.setInterval(function(){ updatePosters(); },posterChangeTime*1000);
 	}
 	//refresh the list of posters periodically
-	/*if(posterReloadTime){
+	if(posterReloadTime){
 		window.setInterval(function(){ loadPosters(); },posterReloadTime*1000);
-	}*/
+	}
 	//refresh the sponsors if they are enabled
-	/*if(sponsorReloadTime && !postersInsteadOfSponsors){
+	if(sponsorReloadTime && !postersInsteadOfSponsors){
 		window.setInterval(function(){ loadThumbs(); },sponsorReloadTime*1000);
-	}*/
-	/*if(activityReloadTime){
+	}
+	if(activityReloadTime){
 		window.setInterval(function(){ loadActivities(); },activityReloadTime*1000);
-	}*/
+	}
 	window.setInterval(function(){ updateDateTime(); },60*1000);
 	
 	
