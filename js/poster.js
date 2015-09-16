@@ -70,10 +70,9 @@ function updatePosters(){
 		l = posters.length;
 		n = (((n+1)%l)+l)%l;
 		//reload array if end is reached. Array will be reloaded before the next poster has to be loaded.
-		if( n == (posters.length - 1) ){
+		if( n == 0 ){
 			//reload posters at end of cycle if posterReloadTime is false.
 			if(posterReloadTime == false) {loadPosters()}
-			n = 0;
 		}
 		updatePoster(n);
 	}
