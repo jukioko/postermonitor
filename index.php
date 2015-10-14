@@ -20,7 +20,7 @@ e.t.s.v. Thor Eindhoven posterviewer
 	<div id="container">
 		<div id="sidebar" class="main">
            	<div id="general">
-            	<div id="time"><canvas id="clock" width="128" height="128"></canvas></div>
+            	<div id="time"><canvas id="clock" width="152" height="152"></canvas></div>
                 <div id="daydate">
             		<div id="day"></div>
                 	<br />

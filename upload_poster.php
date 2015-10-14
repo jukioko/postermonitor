@@ -37,7 +37,7 @@ if(empty($_POST))
         <td><input type="date" name="date"  /></td>
       </tr>
       <tr>
-        <td>Poster. Max 2MB, alleen JPG, JPEG, PNG of GIF</td>
+        <td>Poster. Max 2MB, alleen JPG, JPEG, PNG of GIF<br />Poster dimensions for boardroom TV is 1024px by 576px</td>
         <td><input type="file" name="fileToUpload" id="fileToUpload"></td>
       </tr>
       <tr>

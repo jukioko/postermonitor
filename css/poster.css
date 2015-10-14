@@ -18,27 +18,169 @@ body{
 div{
 		border: 1px solid blue;
 }*/
-/*element blocks*/
+/****************************************/
+/*size independent parts of above styles*/
+/****************************************/
 div#container{ 
 	position: absolute;
 	top: 10px;
-	bottom: 10px;
 	left: 10px;
-	right:10px;
 }
-
-/***************
-Posters
-***************/
 div.poster{
 	position: absolute;
 	right:0px;
 	top: 0px;
-	left:20%;/*calc(20% + 10px);*/
-	bottom:20%;
-	overflow:hidden;
+	/*overflow:hidden;*/
 	/*border-radius:10px;*/
 	background: #a7a7a7;
+}
+div#thumbbar{/*footer*/
+	position:absolute;
+	bottom:0px;
+	right: 0px;
+	/*padding-left: 1.5em;*/
+	background-color: white;/*white;/*#f7f7f7;	*/
+}
+div#sidebar{
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	/*background-color:blue;*/
+}
+div#general{
+	position:absolute;
+	right: 0px;
+	bottom: 0px;
+	/*padding: 0.5em;*/
+	background: #a7a7a7;
+	color: #333;
+}
+/*the activities*/
+div#activities{
+	position:absolute;
+	left:0px;
+	top:0px;
+	background-color:#a7a7a7;
+	overflow:hidden;
+	/*padding: 0.5em;*/
+}
+
+/*************************/
+/*window dependent styles*/
+/*************************/
+@media all and (min-width:959px){
+div#container{ 
+	width: 940px;
+	height: 520px;
+}
+div.poster{
+	width: 720px;
+	height: 405px;
+}
+div#thumbbar{/*footer*/
+	width: 720px;
+	height: 105px;	
+}
+/*everything on the left side*/
+div#sidebar{
+	width: 210px;
+	height: 520px;
+}
+/*clock and date*/
+div#general{
+	width: 210px;
+	height: 105px;	
+}
+canvas#clock{
+	height: 95px;
+	width: 95px;
+}
+/*activity list*/
+div#activities{
+	width: 210px;
+	height: 405px;
+}
+}
+@media all and (min-width:1365px){
+div#container{ 
+	width: 1346px;
+	height: 748px;
+}
+div.poster{
+	width: 1024px;
+	height: 576px;
+}
+div#thumbbar{/*footer*/
+	width: 1024px;
+	height: 162px;	
+}
+/*everything on the left side*/
+div#sidebar{
+	width: 312px;
+	height: 748px;
+}
+/*clock and date*/
+div#general{
+	width: 312px;
+	height: 162px;	
+}
+
+canvas#clock{
+	height: 152px;
+	width: 152px;
+}
+/*activity list*/
+div#activities{
+	width: 312px;
+	height: 576px;
+}
+}
+@media all and (min-width:1919px){
+div#container{ 
+	width: 1900px;
+	height: 1060px;
+}
+div.poster{
+	width: 1440px;
+	height: 810px;
+}
+div#thumbbar{/*footer*/
+	width: 1440px;
+	height: 240px;	
+}
+/*everything on the left side*/
+div#sidebar{
+	width: 450px;
+	height: 1060px;
+}
+/*clock and date*/
+div#general{
+	width: 450px;
+	height: 240px;	
+}
+
+canvas#clock{
+	height: 230px;
+	width: 230px;
+}
+/*activity list*/
+div#activities{
+	width: 450px;
+	height: 810px;
+}
+}
+/*****************/
+/*All other items*/
+/*****************/
+
+div.sponsorblock{
+	position:relative;
+	
+/*	display: block;
+	float:left;*/
+	height:123px;
+	width:350px;
+	
 }
 div.posterview{
 	background-size:contain;
@@ -56,29 +198,7 @@ img#posterimage{
 /***************
 Thumbs, sponsors or posterthumbs
 ***************/
-div#thumbbar{/*footer*/
-	position:absolute;
-	bottom:0px;
-	right: 0px;
-	left: 20%;/*calc(20% + 10px);*/
-	top: 80%;/*calc(80% + 10px);*/
-	padding-left: 1.5em;
-	background-color: white;/*white;/*#f7f7f7;	*/
-	/*overflow:hidden;
-	border-radius:10px;*/
-}
 
-/*a block that contains the image of a sponsor*/
-
-div.sponsorblock{
-	position:relative;
-	
-/*	display: block;
-	float:left;*/
-	height:123px;
-	width:350px;
-	
-}
 img.sponsor{ /* a sponsor image*/
 	position:absolute;
 	
@@ -92,32 +212,18 @@ img.sponsor{ /* a sponsor image*/
 
    /* transform: translate(-50%, -50%);*/
 }
+/*space on the left side of sponsor images*/
+div.lSSlideWrapper {
+	left: 1em;	
+}
 /*pager for posterthumbs should be red instead of blue*/
 .active > a{
     background-color: #ac2121!important;
 }
-/***************
-Activity
-***************/
+
+
+
 /*sidebar contains clock and activities*/
-div#sidebar{
-	position: absolute;
-	bottom: 0px;
-	left: 0px;
-	top: 0px;
-	right: 80%;
-}
-div#general{
-	position:absolute;
-	left:0px;
-	top:80%;/*calc(80% + 10px);*/
-	right: 0px;
-	bottom: 0px;
-	padding: 0.5em;
-	/*border-radius: 1em;*/
-	background: #a7a7a7;
-	color: #333;
-}
 #time, #daydate{
 	padding-top:2em;
 	position:absolute;
@@ -138,28 +244,13 @@ div#general{
 /*clock*/
 canvas#clock{
 	position: absolute;
-	top:0px;
-	left: 0px;
-	/*right: 0px;
-	bottom:0px;
-	display:block;
-	height:100%;*/
-
+	top:5px;
+	left:5px;
 }
 
-/*the activities*/
-div#activities{
-	position:absolute;
-	left:0px;
-	bottom:20%;
-	right: 0px;
-	top:0px;
-	background-color:#a7a7a7;
-	overflow:hidden;
-	padding: 0.5em;
-	/*border-radius:10px;*/
-/*	color: #aaa;*/
-}
+/*********************/
+/*Activity  specific */
+/*********************/
 
 /*some spacing between activities*/
 div.activity{
