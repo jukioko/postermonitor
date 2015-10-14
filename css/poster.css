@@ -101,9 +101,9 @@ div#activities{
 	height: 405px;
 }
 }
-@media all and (min-width:1365px){
+@media all and (min-width:1359px){
 div#container{ 
-	width: 1346px;
+	width: 1340px;
 	height: 748px;
 }
 div.poster{
@@ -116,12 +116,12 @@ div#thumbbar{/*footer*/
 }
 /*everything on the left side*/
 div#sidebar{
-	width: 312px;
+	width: 306px;
 	height: 748px;
 }
 /*clock and date*/
 div#general{
-	width: 312px;
+	width: 306px;
 	height: 162px;	
 }
 
@@ -131,7 +131,7 @@ canvas#clock{
 }
 /*activity list*/
 div#activities{
-	width: 312px;
+	width: 306px;
 	height: 576px;
 }
 }
