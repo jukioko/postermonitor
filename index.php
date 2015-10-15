@@ -1,3 +1,16 @@
+<?php 
+	if($_GET['page']){
+		switch($_GET['page']){	
+			case 'upload':
+				include('upload_poster.php');
+				break;
+			case 'list':
+				include('list_posters.php');
+				break;
+		}
+	}else{
+		?>
+        
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,6 +30,7 @@ e.t.s.v. Thor Eindhoven posterviewer
 </head>
 
 <body>
+
 	<div id="container">
 		<div id="sidebar" class="main">
            	<div id="general">
@@ -38,5 +52,7 @@ e.t.s.v. Thor Eindhoven posterviewer
             <ul id="thumbcontainer"></ul>
         </div>
 	</div>
+    
 </body>
 </html>
+<?php } ?>
