@@ -10,7 +10,7 @@ var sponsorChangeTime = 5;
 
 //how often to reload posters. False for reload each cycle
 var posterReloadTime = false;
-//reload activities every 10 minutes. Too often will block you from thor-exchange
+//reload activities every 10 minutes. Too often will block you from thor-exchange. The php-cache will limit to 5min refreshes.
 var activityReloadTime = 10*60;
 //reload sponsors each hour.
 var sponsorReloadTime = 3600;
@@ -189,7 +189,7 @@ function loadThumbs(){
 			html += '<li><div class="sponsorblock"><img class="sponsor" src="'+val.loc+'" /></div></li>';
 		});
 		$("#thumbcontainer").html(html);
-		settings = {
+		/*settings = {
 			autoWidth: true,
 			controls: false,
 			pager: false,
@@ -198,8 +198,8 @@ function loadThumbs(){
 /*			onBeforeSlide: function(){ /*This lets the posters scroll if you move the bottom bar*/
 				/*updatePosters(this.getCurrentSlideCount());
 			}*/
-		};
-		thumbslider = $("#thumbcontainer").lightSlider(settings);
+	/*	};
+		thumbslider = $("#thumbcontainer").lightSlider(settings);*/
 	}else{
 		//update the array containing the sponsor objects
 		$.getJSON('load_posters.php',{Thor:"gaaf",type:"sponsors"}, function (data){
@@ -213,20 +213,20 @@ function loadThumbs(){
 				html += '<li><div class="sponsorblock"><img class="sponsor" src="'+val+'" /></div></li>';
 			});
 			$("#thumbcontainer").html(html);
-			settings = {
+			/*settings = {
 			/*item: 5,
 			*item: 3,
 			autoWidth: true,
 			useCSS: true,
 			controls: false,
 			gallery: true,*/
-			loop: true,
+			/*loop: true,
 			auto: true,
 			pause: sponsorChangeTime*1000,
 			pager: false
 			/*thumbMargin: 100*/
-			};	
-			thumbslider = $("#thumbcontainer").lightSlider(settings); 	
+			/*};	
+			thumbslider = $("#thumbcontainer").lightSlider(settings); 	*/
 		});
 	}
 }
@@ -282,5 +282,16 @@ $(function(){
 	}
 	window.setInterval(function(){ updateDateTime(); },60*1000);
 	
-	
+	//enable the slider
+	settings = {
+			autoWidth: true,
+			controls: false,
+			pager: false,
+			loop: true,
+			auto: false,
+/*			onBeforeSlide: function(){ /*This lets the posters scroll if you move the bottom bar*/
+				/*updatePosters(this.getCurrentSlideCount());
+			}*/
+		};
+		thumbslider = $("#thumbcontainer").lightSlider(settings);
 });
