@@ -1,14 +1,16 @@
 <?php 
+//with url-rewriting a GET['page'] is created. use another file in case /upload or /list is used.
 	if($_GET['page']){
 		switch($_GET['page']){	
 			case 'upload':
-				include('upload_poster.php');
+				header("Location:upload_poster.php");
 				break;
 			case 'list':
-				include('list_posters.php');
+				header("Location:list_posters.php");
 				break;
 		}
 	}else{
+//if no GET show the page below, this is the normal postermanager.
 		?>
         
 <!DOCTYPE html>
@@ -18,7 +20,7 @@
 Jeroen van Oorschot 2015
 e.t.s.v. Thor Eindhoven posterviewer
 -->
-<meta http-equiv="refresh" content="3600">
+<meta http-equiv="refresh" content="3600"><!--Do a regular refresh to prevent memory leak problems on raspberry pi-->
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link type="text/css" rel="stylesheet" href="./css/poster.css" />
 <link type="text/css" rel="stylesheet" href="./css/lightslider.css" />
