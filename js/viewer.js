@@ -165,7 +165,7 @@ function loadActivities(){
 			activities.push(val);
 		});
 		//sort the activities by start date
-		activities.sort(function(a,b){return a.start-b.start});
+		activities.sort(function(a,b){return a.sta-b.sta});
 		//show the activities
 		updateActivities();
 	});
