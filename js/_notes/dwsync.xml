@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <dwsync>
 <file name="jquery-2.1.3.min.js" server="www.vanoorschot.biz/public_html/test/" local="130714422383465743" remote="130766069400000000" Dst="2" />
-<file name="poster.js" server="www.vanoorschot.biz/public_html/test/" local="130897353567383345" remote="130897353600000000" Dst="2" />
 <file name="clock.js" server="www.vanoorschot.biz/public_html/test/" local="130854926453196054" remote="130868683200000000" Dst="2" />
 <file name="lightslider.js" server="www.vanoorschot.biz/public_html/test/" local="130861869350607447" remote="130868683200000000" Dst="2" />
+<file name="jquery-2.1.3.min.js" server="vanaheim1.thor.edu:20022//poster/" local="130714422383465743" remote="130906798410000000" Dst="1" />
+<file name="clock.js" server="vanaheim1.thor.edu:20022//poster/" local="130854926453196054" remote="130906798410000000" Dst="1" />
+<file name="lightslider.js" server="vanaheim1.thor.edu:20022//poster/" local="130861869350607447" remote="130906798420000000" Dst="1" />
+<file name="clock.js" server="vanaheim1.thor.edu:20022//poster/public/" local="130906899885864609" remote="130906899420000000" Dst="1" />
+<file name="jquery-2.1.3.min.js" server="vanaheim1.thor.edu:20022//poster/public/" local="130714422383465743" remote="130906901800000000" Dst="1" />
+<file name="lightslider.js" server="vanaheim1.thor.edu:20022//poster/public/" local="130906876536679104" remote="130906901840000000" Dst="1" />
+<file name="viewer.js" server="vanaheim1.thor.edu:20022//poster/public/" local="130908096399009780" remote="130908095930000000" Dst="1" />
 </dwsync>

@@ -13,7 +13,7 @@ function initClock(){
  radius = radius * 0.90
  window.setInterval(drawClock, 60*1000);
  img = new Image();
- img.src = 'thorlogo2.png'; 
+ img.src = 'thorlogo4.png'; 
 //start drawing the clock after some delay, to have time to load the thorlogo image.
  setTimeout(function(){
 	 drawClock();

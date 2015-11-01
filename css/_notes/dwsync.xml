@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <dwsync>
-<file name="poster.css" server="www.vanoorschot.biz/public_html/test/" local="130893032918437950" remote="130893032400000000" Dst="2" />
 <file name="lightslider.css" server="www.vanoorschot.biz/public_html/test/" local="130766068810302101" remote="130766069400000000" Dst="2" />
+<file name="lightslider.css" server="vanaheim1.thor.edu:20022//poster/" local="130766068810302101" remote="130906798410000000" Dst="1" />
+<file name="lightslider.css" server="vanaheim1.thor.edu:20022//poster/public/" local="130766068810302101" remote="130906824730000000" Dst="1" />
+<file name="viewer.css" server="vanaheim1.thor.edu:20022//poster/public/" local="130908072676841168" remote="130908079980000000" Dst="1" />
+<file name="viewer_poster_only.css" server="vanaheim1.thor.edu:20022//poster/public/" local="130907962652974257" remote="130907996860000000" Dst="1" />
 </dwsync>

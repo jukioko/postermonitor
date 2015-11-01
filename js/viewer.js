@@ -1,64 +1,57 @@
-// JavaScript voor Thor Postermonitor
+// Thor Postermonitor
+// Jeroen van Oorschot 2015
+//e.t.s.v. Thor Eindhoven
 
-
-var maxNoActivities = 11;
+/***********
+Poster settings
+***********/
 //reloadtimes, value in seconds
 //how long to display a poster
 var posterChangeTime = 15;
-//how long till changing order of sponsors
-var sponsorChangeTime = 5;
-
 //how often to reload posters. False for reload each cycle
 var posterReloadTime = false;
-//reload activities every 10 minutes. Too often will block you from thor-exchange. The php-cache will limit to 5min refreshes.
-var activityReloadTime = 10*60;
-//reload sponsors each hour.
-var sponsorReloadTime = 3600;
 //time in ms for the animation from poster to poster.
 var posterRefreshAnimation = 500; 
+
+/**********
+Activity overview settings
+***********/
+//reload activities every 10 minutes. Too often will block you from thor-exchange. The php-cache will limit to 5min refreshes.
+var activityReloadTime = 10*60;
+//number of activities that are shown
+var maxNoActivities = 11;
+
+/**********
+Bottom bar options
+**********/
 //use sponsors or use posters at the bottom row
 var postersInsteadOfSponsors = true;
+//how long till changing order of sponsors
+var sponsorChangeTime = 5;
+//reload sponsors each hour.
+var sponsorReloadTime = 3600;
 
+/*********
+Other variables, don't change these!
+*********/
+//mode to only show posters. Determined automatically by the existence of a thumbbar.
+var posterOnlyMode;
 //variable to hold array of posters
 var thumbslider;
+//arrays for the variable objects
 var posters = [];
 var thumbs = [];
 var activities = [];
-var n = 0;  //the number of the currently viewed poster
-//var allowedImageExtensions = ["jpg","png","gif","JPEG","JPG","jpeg","PNG","GIF"];
-//var allowedPDFExtensions = ["PDF","pdf"];
+//settings for the bottomslider
+var settings; 
+//the number of the currently viewed poster
+var n = 0;
+//date names for the date and time
 var daysOfWeek = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']; //weeks start at sunday
 var daysOfWeekFull = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
-
-/*
-//object for a poster
-function poster(filename, ext){
-	this.loc = filename;
-	this.ext = ext;
-	this.img = new Image()
-	this.img.src = this.loc;
-}
-
-//object for a sponsor/thumb
-function thumb(filename){
-	this.loc = filename;
-}
-*/
-//object for an activity
-function activity(data){
-	this.loc = data.loc;
-	this.start = new Date((data.sta*1000));
-	this.end = new Date((data.end*1000));
-	this.association = data.ass;
-	this.title = data.tit;
-	this.allday = data.ald;
-}
-
-
-
-/********************/
+3/********************/
 /*     posters      */
 /********************/ 
 
@@ -76,6 +69,7 @@ function updatePosters(){
 		}
 		updatePoster(n);
 	}
+	console.log('updatePosters complete (auto)');
 }
 
 //go to poster 'n'. n should be a valid number*/
@@ -89,20 +83,21 @@ function updatePoster(posterNr){
 	$("#posterview1").css('background-image','url("'+poster.loc+'")');
 
 	//change posters in the bottom if they are used instead of sponsor logo's
-	if(postersInsteadOfSponsors){
+	if(postersInsteadOfSponsors && !posterOnlyMode){
 		thumbslider.goToSlide(posterNr);
 	}
 		$("#posterview1").animate({
 			opacity: 1
 			},posterRefreshAnimation/2,'');
 	});
+	console.log('updatePoster poster '+posterNr+' complete');
 }
 
 //load the list of posters from the server
 function loadPosters(){
 	//update the array containing the poster objects
 	console.log('update');
-	$.getJSON('load_posters.php', {Thor:"gaaf",type:"posters"} , function (data){
+	$.getJSON('load_filenames.php', {Thor:"gaaf",type:"posters"} , function (data){
 		//empty old array
 		posters = [];
 		//fill array poster by poster
@@ -113,10 +108,11 @@ function loadPosters(){
 					loc: loc
 				});
 		});
-		if(postersInsteadOfSponsors){
+		if(postersInsteadOfSponsors && !posterOnlyMode){
 			loadThumbs();		
 		}
 	});
+	console.log('loadPosters complete');
 }
 
 /********************/
@@ -131,12 +127,12 @@ function updateActivities(){
 	}
 	else{
 		for(var i=0;i<activities.length && i<maxNoActivities;i++){
-			var a = activities[i].start;
-			html += '<div class="activity ' +  activities[i].association+'" ><h2>'+activities[i].title+'</h2><h3>';
+			var a = activities[i].sta;
+			html += '<div class="activity ' +  activities[i].ass+'" ><h2>'+activities[i].tit+'</h2><h3>';
 			if(a != false){
 				var astring = daysOfWeek[a.getDay()]+' '+a.getDate()+' '+months[a.getMonth()];
 				html += astring;
-				if(!activities[i].allday){ //non-allday activity, show starttime
+				if(!activities[i].ald){ //non-allday activity, show starttime
 					html += ', ' + a.getHours()+':'+ (a.getMinutes()<10?'0':'') + a.getMinutes();
 				}else{ //allday activity, show endday
 					var e = activities[i].end;
@@ -151,6 +147,7 @@ function updateActivities(){
 		}
 		$("#activitiesContainer").html(html);
 	}
+	console.log('updateActivities complete');
 }
 
 //load the activities from the thor-sharepoint (sites.ele.tue.nl)
@@ -161,15 +158,18 @@ function loadActivities(){
 		activities = [];
 		//fill array poster by poster
 		$.each(data, function(key, val){
-			var thisactivity = new activity(val);
-			activities.push(thisactivity);
+			//var thisactivity = new activity(val);
+			val.sta = new Date((val.sta*1000));
+			val.end = new Date((val.end*1000));
+	
+			activities.push(val);
 		});
 		//sort the activities by start date
 		activities.sort(function(a,b){return a.start-b.start});
 		//show the activities
 		updateActivities();
 	});
-	console.log('activities updated');
+	console.log('loadActivities complete');
 }
 
 /********************/
@@ -186,23 +186,12 @@ function loadThumbs(){
 			thumbs.push({
 				loc: val.loc
 			});
-			html += '<li><div class="sponsorblock"><img class="sponsor" src="'+val.loc+'" /></div></li>';
+			html += '<li><div class="thumbblock"><img class="thumb" src="'+val.loc+'" data-index="'+key+'"/></div></li>';
+			
 		});
-		$("#thumbcontainer").html(html);
-		/*settings = {
-			autoWidth: true,
-			controls: false,
-			pager: false,
-			loop: true,
-			auto: false,
-/*			onBeforeSlide: function(){ /*This lets the posters scroll if you move the bottom bar*/
-				/*updatePosters(this.getCurrentSlideCount());
-			}*/
-	/*	};
-		thumbslider = $("#thumbcontainer").lightSlider(settings);*/
 	}else{
 		//update the array containing the sponsor objects
-		$.getJSON('load_posters.php',{Thor:"gaaf",type:"sponsors"}, function (data){
+		$.getJSON('load_filenames.php',{Thor:"gaaf",type:"sponsors"}, function (data){
 			//fill array sponsor by sponsor
 			$.each(data, function(key, val){
 				console.log(key,val);
@@ -210,25 +199,15 @@ function loadThumbs(){
 				thumbs.push({
 					loc: val
 				});
-				html += '<li><div class="sponsorblock"><img class="sponsor" src="'+val+'" /></div></li>';
+				html += '<li><div class="thumbblock"><img class="thumb" src="'+val+'" /></div></li>';
 			});
-			$("#thumbcontainer").html(html);
-			/*settings = {
-			/*item: 5,
-			*item: 3,
-			autoWidth: true,
-			useCSS: true,
-			controls: false,
-			gallery: true,*/
-			/*loop: true,
-			auto: true,
-			pause: sponsorChangeTime*1000,
-			pager: false
-			/*thumbMargin: 100*/
-			/*};	
-			thumbslider = $("#thumbcontainer").lightSlider(settings); 	*/
 		});
 	}
+	$("#thumblist").html(html);
+	thumbslider.refresh();
+	//if(thumbslider){thumbslider.destroy();}
+	//thumbslider = $("#thumbcontainer").lightSlider(settings);
+	console.log('loadThumbs complete');
 }
 
 /*****************/
@@ -247,24 +226,14 @@ function updateDateTime(){
 	$("#day").text(day);
 }
 
-//key presses for changing the poster
-document.addEventListener('keydown', function(event) {
-	l = posters.length;
-    if(event.keyCode == 37) {
-		n = (((n-1)%l)+l)%l;
-        updatePoster(n);
-    }
-    else if(event.keyCode == 39) {
-		n = (((n+1)%l)+l)%l;
-        updatePoster(n);
-    }
-});
 
 //execute functions periodically and once at startup
 $(function(){
+	//var posteronlymode enabled
+	posterOnlyMode = ($("#thumbcontainer").length)?false:true;
+
+
 	loadPosters();
-	loadActivities();
-	updateDateTime();
 	//shift the posterarray, and switch the bottom bar with small posters if it is used.
 	if(posterChangeTime){
 		window.setInterval(function(){ updatePosters(); },posterChangeTime*1000);
@@ -273,25 +242,67 @@ $(function(){
 	if(posterReloadTime){
 		window.setInterval(function(){ loadPosters(); },posterReloadTime*1000);
 	}
-	//refresh the sponsors if they are enabled
-	if(sponsorReloadTime && !postersInsteadOfSponsors){
-		window.setInterval(function(){ loadThumbs(); },sponsorReloadTime*1000);
+
+
+	//key presses for changing the poster using arrow keys
+	document.addEventListener('keydown', function(event) {
+		l = posters.length;
+		if(event.keyCode == 37) {
+			n = (((n-1)%l)+l)%l;
+			updatePoster(n);
+		}
+		else if(event.keyCode == 39) {
+			n = (((n+1)%l)+l)%l;
+			updatePoster(n);
+		}
+	});
+
+
+	//timers and calls that are not needed in posteronly mode
+	if(!posterOnlyMode){
+		loadActivities();
+		updateDateTime();
+		
+		//refresh the sponsors if they are enabled
+		if(sponsorReloadTime && !postersInsteadOfSponsors){
+			window.setInterval(function(){ loadThumbs(); },sponsorReloadTime*1000);
+		}
+		//periodically reload the activities.
+		if(activityReloadTime){
+			window.setInterval(function(){ loadActivities(); },activityReloadTime*1000);
+		}
+		//update the date every minute. This is not for the clock, only the date
+		window.setInterval(function(){ updateDateTime(); },60*1000);
+		
+		//settings for the slider
+		if(postersInsteadOfSponsors){
+			settings = {
+				autoWidth: true,
+				controls: false,
+				pager: false,
+				loop: true,
+				auto: false
+			};
+		}else{
+			settings = {
+				autoWidth: true,
+				controls: false,
+				gallery: true,
+				loop: true,
+				auto: true,
+				pause: sponsorChangeTime*1000,
+				pager: false
+			};
+		}
+		//make the thumbslider
+		thumbslider = $("#thumblist").lightSlider(settings);
+		
+		//refresh the thumbslider after (approximately) all images are loaded, so it adjusts to the image width
+		//and switch to the first poster
+		setTimeout(function(){
+			thumbslider.refresh();
+			updatePoster(0);
+		}, 2000);
 	}
-	if(activityReloadTime){
-		window.setInterval(function(){ loadActivities(); },activityReloadTime*1000);
-	}
-	window.setInterval(function(){ updateDateTime(); },60*1000);
-	
-	//enable the slider
-	settings = {
-			autoWidth: true,
-			controls: false,
-			pager: false,
-			loop: true,
-			auto: false,
-/*			onBeforeSlide: function(){ /*This lets the posters scroll if you move the bottom bar*/
-				/*updatePosters(this.getCurrentSlideCount());
-			}*/
-		};
-		thumbslider = $("#thumbcontainer").lightSlider(settings);
+	console.log('init complete');
 });

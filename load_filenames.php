@@ -7,7 +7,7 @@ Gets list of posters and puts it to the client
 if($_GET['Thor']=='gaaf'){
 	if($_GET['type']=='posters'){
 		$location = "./upload/";
-		$filenames = glob($location.'{*.jpg,*.png,*.jpeg,*.gif}', GLOB_BRACE|GLOB_NOSORT);
+		$filenames = glob($location.'{*.jpg,*.png,*.jpeg,*.gif}', GLOB_BRACE);
 		print(json_encode($filenames));
 	}elseif($_GET['type']=='sponsors'){
 		$location = "./posters/sponsors/";

@@ -36,10 +36,11 @@ div.poster{
 }
 div#thumbbar{/*footer*/
 	position:absolute;
+	/*attach to bottom right of container*/
 	bottom:0px;
 	right: 0px;
 	/*padding-left: 1.5em;*/
-	background-color: white;/*white;/*#f7f7f7;	*/
+	background-color: white;/*white; #f7f7f7;	*/
 }
 div#sidebar{
 	position: absolute;
@@ -68,6 +69,17 @@ div#activities{
 /*************************/
 /*window dependent styles*/
 /*************************/
+@media all and (max-width:959px){
+	div{
+		visibility:hidden;
+	}
+	div.container{
+		visibility:visible;
+	}
+	canvas#clock{
+		visibility:visible;
+	}
+}
 @media all and (min-width:959px){
 div#container{ 
 	width: 940px;
@@ -99,6 +111,13 @@ canvas#clock{
 div#activities{
 	width: 210px;
 	height: 405px;
+	font-size:0.9em;
+}
+#day, #date{
+	font-size:1em;
+}
+img.thumb{
+	height:85px;
 }
 }
 @media all and (min-width:1359px){
@@ -133,6 +152,14 @@ canvas#clock{
 div#activities{
 	width: 306px;
 	height: 576px;
+	font-size:1em;
+}
+#day, #date{
+	font-size:2.5em;
+}
+
+img.thumb{
+	height:142px;
 }
 }
 @media all and (min-width:1919px){
@@ -167,61 +194,37 @@ canvas#clock{
 div#activities{
 	width: 450px;
 	height: 810px;
+	font-size:1.3em;
+}
+#day, #date{
+	font-size:3em;
+}
+
+img.thumb{
+	height:220px;
 }
 }
 /*****************/
 /*All other items*/
 /*****************/
 
-div.sponsorblock{
-	position:relative;
-	
-/*	display: block;
-	float:left;*/
-	height:123px;
-	width:350px;
-	
-}
 div.posterview{
 	background-size:contain;
 	background-repeat:no-repeat;
 }
-/*
-img#posterimage{
-	position:absolute;
-/*	top: 50%;
-	left: 50%;
-    transform: translate(-50%, -50%);*/
-/*	overflow:hidden;
-}*/
-
 /***************
 Thumbs, sponsors or posterthumbs
 ***************/
-
-img.sponsor{ /* a sponsor image*/
+div#thumbcontainer{
+	top:0px;
+	left:10px;
+	right:10px;
+	bottom:10px;
 	position:absolute;
-	
-	/*top: 50%;
-	left: 50%;
-	bottom: 50%;
-	right: 50%;*/
-	
-	max-height: 95%;
-	max-width: 95%;
-
-   /* transform: translate(-50%, -50%);*/
 }
-/*space on the left side of sponsor images*/
-div.lSSlideWrapper {
-	left: 1em;	
+img.thumb{ /* a sponsor image*/
+	max-height:99%;
 }
-/*pager for posterthumbs should be red instead of blue*/
-.active > a{
-    background-color: #ac2121!important;
-}
-
-
 
 /*sidebar contains clock and activities*/
 #time, #daydate{
@@ -234,13 +237,15 @@ div.lSSlideWrapper {
 #time{
 	left:0px;
 }
+/*block containing the day and date*/
 #daydate{
 	right:0px;
 }
-#day, #date{
-	font-size:1.5em;
+/*day and date blocks*/
+/*#day, #date{
+	font-size:2.5em;
 	width: 100%;
-}
+}*/
 /*clock*/
 canvas#clock{
 	position: absolute;
