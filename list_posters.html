@@ -4,6 +4,7 @@
 <!--
 Jeroen van Oorschot 2015
 e.t.s.v. Thor Eindhoven posterviewer
+Lists all submitted, currently active posters, and possibility to delete them.
 -->
 <script type="text/javascript" src="./js/jquery-2.1.3.min.js"></script>
 
@@ -35,8 +36,9 @@ th,tr,td{
 
 <a href="index.php" title="Show posterviewer">Show posterviewer</a>
 <br />
-<a href="upload_poster.php" title="upload">Upload a new poster</a>
+<a href="http://poster.thor.edu/upload" title="upload">Upload a new poster</a>
 <h2>List of current posters</h2>
+Posters are visible till the end of the end-day.
 <button onclick="loadPosters()">Refresh</button>
 <table>
 <thead>
@@ -49,7 +51,7 @@ th,tr,td{
 var posters = [];
 function loadPosters(){
 	//update the array containing the poster objects
-	$.getJSON('load_posters.php', {Thor:"gaaf",type:"posters"} , function (data){
+	$.getJSON('load_filenames.php', {Thor:"gaaf",type:"posters"} , function (data){
 		//empty old array
 		posters = [];
 		//fill array poster by poster
@@ -57,8 +59,8 @@ function loadPosters(){
 		$.each(data, function(key, val){
 			var loc = val;
 			var parts = loc.split('/');
-			var folder = parts[1];
-			var fullname = parts[2];
+			//var folder = parts[1];
+			var fullname = parts[1];
 			
 			parts = fullname.split(',');
 			name = parts[1];

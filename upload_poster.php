@@ -4,6 +4,7 @@
 <!--
 Jeroen van Oorschot 2015
 e.t.s.v. Thor Eindhoven posterviewer
+Page to upload a poster, and code to process the poster for publishing.
 -->
 <title>PromoniThor Manage | Upload</title>
 <style type="text/css">
@@ -37,7 +38,7 @@ if(empty($_POST))
         <td><input type="date" name="date"  /></td>
       </tr>
       <tr>
-        <td>Poster. Max 2MB, alleen JPG, JPEG, PNG of GIF<br />Poster dimensions for boardroom TV is 1024px by 576px</td>
+        <td>Poster. Max 2MB, alleen JPG, JPEG, PNG of GIF<br />Poster dimensions for boardroom TV is 1024px by 576px or 1440px by 810px</td>
         <td><input type="file" name="fileToUpload" id="fileToUpload"></td>
       </tr>
       <tr>
@@ -95,7 +96,7 @@ if(empty($_POST))
 			$uploadOk = 0;
 		}
 		
-		
+		//adding time to filename to prevent duplicate filenames
 		$target_file = $target_dir . $enddate .','. $title .','. time() .'.'. $extension;
 		echo '<br />Filename: '.$target_file;
 		
@@ -124,11 +125,11 @@ if(empty($_POST))
 		}
 ?>
 <h2>Navigate</h2>
-<a href="list_posters.php" title="List all submitted posters">List all submitted posters</a>
+<a href="http://poster.thor.edu/list" title="List all submitted posters">List all submitted posters</a>
 <br />
-<a href="index.php" title="Show posterviewer">Show posterviewer</a>
+<a href="http://poster.thor.edu" title="Show posterviewer">Show posterviewer</a>
 <br />
-<a href="upload_poster.php" title="Upload new poster">Upload new poster</a>
+<a href="http://poster.thor.edu/upload" title="Upload new poster">Upload new poster</a>
 
 </p>
 <?php

@@ -1,7 +1,7 @@
 // Thor Postermonitor
 // Jeroen van Oorschot 2015
-//e.t.s.v. Thor Eindhoven
-
+// e.t.s.v. Thor Eindhoven
+// Javascript code and settings for the viewer
 /***********
 Poster settings
 ***********/

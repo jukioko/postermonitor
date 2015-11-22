@@ -4,10 +4,10 @@ Jeroen van Oorschot 2015
 e.t.s.v. Thor Eindhoven posterviewer
 Gets list of posters and puts it to the client
 */
+require_once('functions.php');
 if($_GET['Thor']=='gaaf'){
 	if($_GET['type']=='posters'){
-		$location = "./upload/";
-		$filenames = glob($location.'{*.jpg,*.png,*.jpeg,*.gif}', GLOB_BRACE);
+		$filenames = getPosterFilenames();
 		print(json_encode($filenames));
 	}elseif($_GET['type']=='sponsors'){
 		$location = "./posters/sponsors/";
