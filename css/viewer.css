@@ -13,6 +13,12 @@ body{
 	font-family: 'segoe ui semibold','Trebuchet MS',Verdana, Geneva, sans-serif;
 	font-size:11px; /*relative font size of all texts*/
 	background-color:#ac2121;
+	-webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 /*
 div{
@@ -61,9 +67,9 @@ div#activities{
 	position:absolute;
 	left:0px;
 	top:0px;
+	padding-left:10px; /*spacing for the activitieslist*/
 	background-color:#a7a7a7;
 	overflow:hidden;
-	/*padding: 0.5em;*/
 }
 
 /*************************/
@@ -109,7 +115,7 @@ canvas#clock{
 }
 /*activity list*/
 div#activities{
-	width: 210px;
+	width: 200px;
 	height: 405px;
 	font-size:0.9em;
 }
@@ -150,7 +156,7 @@ canvas#clock{
 }
 /*activity list*/
 div#activities{
-	width: 306px;
+	width: 296px;
 	height: 576px;
 	font-size:1em;
 }
@@ -192,7 +198,7 @@ canvas#clock{
 }
 /*activity list*/
 div#activities{
-	width: 450px;
+	width: 440px;
 	height: 810px;
 	font-size:1.3em;
 }
