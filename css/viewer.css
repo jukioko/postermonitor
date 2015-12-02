@@ -217,6 +217,7 @@ img.thumb{
 div.posterview{
 	background-size:contain;
 	background-repeat:no-repeat;
+	background-position:center;
 }
 /***************
 Thumbs, sponsors or posterthumbs
