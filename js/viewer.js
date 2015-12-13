@@ -69,11 +69,13 @@ function updatePosters(){
 		}
 		updatePoster(n);
 	}
-	console.log('updatePosters complete (auto)');
+	//console.log('updatePosters complete (auto)');
 }
 
 //go to poster 'n'. n should be a valid number*/
 function updatePoster(posterNr){
+	//update the poster number n global (if not done so yet)
+	n = posterNr;
 	var	poster = posters[posterNr];
 	//go to next poster
 	//animate and set width/heigth correct (scaling)
@@ -90,13 +92,13 @@ function updatePoster(posterNr){
 			opacity: 1
 			},posterRefreshAnimation/2,'');
 	});
-	console.log('updatePoster poster '+posterNr+' complete');
+	//console.log('updatePoster poster '+posterNr+' complete');
 }
 
 //load the list of posters from the server
 function loadPosters(){
 	//update the array containing the poster objects
-	console.log('update');
+	//console.log('update');
 	$.getJSON('load_filenames.php', {Thor:"gaaf",type:"posters"} , function (data){
 		//empty old array
 		posters = [];
@@ -112,7 +114,7 @@ function loadPosters(){
 			loadThumbs();		
 		}
 	});
-	console.log('loadPosters complete');
+	//console.log('loadPosters complete');
 }
 
 /********************/
@@ -147,7 +149,7 @@ function updateActivities(){
 		}
 		$("#activitiesContainer").html(html);
 	}
-	console.log('updateActivities complete');
+	//console.log('updateActivities complete');
 }
 
 //load the activities from the thor-sharepoint (sites.ele.tue.nl)
@@ -169,7 +171,7 @@ function loadActivities(){
 		//show the activities
 		updateActivities();
 	});
-	console.log('loadActivities complete');
+	//console.log('loadActivities complete');
 }
 
 /********************/
@@ -194,7 +196,7 @@ function loadThumbs(){
 		$.getJSON('load_filenames.php',{Thor:"gaaf",type:"sponsors"}, function (data){
 			//fill array sponsor by sponsor
 			$.each(data, function(key, val){
-				console.log(key,val);
+				//console.log(key,val);
 				//var thissponsor = new thumb(val);
 				thumbs.push({
 					loc: val
@@ -207,7 +209,7 @@ function loadThumbs(){
 	thumbslider.refresh();
 	//if(thumbslider){thumbslider.destroy();}
 	//thumbslider = $("#thumbcontainer").lightSlider(settings);
-	console.log('loadThumbs complete');
+	//console.log('loadThumbs complete');
 }
 
 /*****************/
@@ -256,7 +258,16 @@ $(function(){
 			updatePoster(n);
 		}
 	});
-
+	
+	//click or touch on bottom row posterthumbs
+	$("#thumbbar").on("click",function(event){
+		//n is a global. Don't use it for possible undefined values
+		clicknr = $(event.target).data('index');
+		if(isFinite(clicknr) && clicknr<posters.length){
+			//console.log(clicknr);
+			updatePoster(clicknr);
+		}
+	});
 
 	//timers and calls that are not needed in posteronly mode
 	if(!posterOnlyMode){
@@ -282,6 +293,7 @@ $(function(){
 				pager: false,
 				loop: true,
 				auto: false
+			//	gallery:true
 			};
 		}else{
 			settings = {
@@ -302,7 +314,7 @@ $(function(){
 		setTimeout(function(){
 			thumbslider.refresh();
 			updatePoster(0);
-		}, 2000);
+		}, 5000);
 	}
-	console.log('init complete');
+	//console.log('init complete');
 });
