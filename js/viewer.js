@@ -10,8 +10,10 @@ Poster settings
 var posterChangeTime = 15;
 //how often to reload posters. False for reload each cycle
 var posterReloadTime = false;
+
+//now done in css, not used anymore. Look in general.css for this time-setting.
 //time in ms for the animation from poster to poster.
-var posterRefreshAnimation = 500; 
+//var posterRefreshAnimation = 500; 
 
 /**********
 Activity overview settings
@@ -77,21 +79,45 @@ function updatePoster(posterNr){
 	//update the poster number n global (if not done so yet)
 	n = posterNr;
 	var	poster = posters[posterNr];
+	
+	//old jquery animation system, no longer used.
 	//go to next poster
 	//animate and set width/heigth correct (scaling)
-	$("#posterview1").animate({
-		opacity: 0
-	},posterRefreshAnimation/2,'',function(){
-	$("#posterview1").css('background-image','url("'+poster.loc+'")');
-
+	//$("#posterview1").animate({
+	//	opacity: 0
+	//},posterRefreshAnimation/2,'',function(){
+	
+	//		$("#posterview1").animate({
+//			opacity: 1
+//			},posterRefreshAnimation/2,'');
+//	});
+	
+	//what to do when fadeout is finished
+	var fadeOutFunc = function(e) { 
+   		console.log("fin fadeout");
+		//replace poster
+   		$("#posterview1").css('background-image','url("'+poster.loc+'")');
+   		$("#posterview1").removeClass("fadeOut");
+		//fade in the poster
+		$("#posterview1").addClass("fadeIn");
+		//remove this event
+		$(this).unbind(e);
+	}
+	
+	//remove the previous classes
+	$("#posterview1").removeClass("fadeIn");
+	
+	//event handler for fadeout completed
+	$("#posterview1").bind('oanimationend animationend webkitAnimationEnd', fadeOutFunc);
+	
+	//actually fadeout the image
+	$("#posterview1").addClass("fadeOut");
+	
 	//change posters in the bottom if they are used instead of sponsor logo's
 	if(postersInsteadOfSponsors && !posterOnlyMode){
 		thumbslider.goToSlide(posterNr);
 	}
-		$("#posterview1").animate({
-			opacity: 1
-			},posterRefreshAnimation/2,'');
-	});
+
 	//console.log('updatePoster poster '+posterNr+' complete');
 }
 

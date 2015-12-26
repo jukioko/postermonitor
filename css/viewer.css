@@ -2,28 +2,7 @@
 Jeroen van Oorschot 2015
 CSS file for Thor Postermonitor, posterviewer
 */
-html,body{
-	margin:0px;
-	padding:0px;
-	height:100%;
-	overflow:hidden;
-	position: relative;	
-}
-body{
-	font-family: 'segoe ui semibold','Trebuchet MS',Verdana, Geneva, sans-serif;
-	font-size:11px; /*relative font size of all texts*/
-	background-color:#ac2121;
-	-webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-/*
-div{
-		border: 1px solid blue;
-}*/
+
 /****************************************/
 /*size independent parts of above styles*/
 /****************************************/
