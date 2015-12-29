@@ -94,7 +94,7 @@ function updatePoster(posterNr){
 	
 	//what to do when fadeout is finished
 	var fadeOutFunc = function(e) { 
-   		console.log("fin fadeout");
+   		//console.log("fin fadeout");
 		//replace poster
    		$("#posterview1").css('background-image','url("'+poster.loc+'")');
    		$("#posterview1").removeClass("fadeOut");
@@ -108,7 +108,8 @@ function updatePoster(posterNr){
 	$("#posterview1").removeClass("fadeIn");
 	
 	//event handler for fadeout completed
-	$("#posterview1").bind('oanimationend animationend webkitAnimationEnd', fadeOutFunc);
+	//oanimationend webkitAnimationEnd
+	$("#posterview1").bind('animationend', fadeOutFunc);
 	
 	//actually fadeout the image
 	$("#posterview1").addClass("fadeOut");
