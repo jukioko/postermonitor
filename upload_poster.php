@@ -62,7 +62,8 @@ if(empty($_POST))
 		
 		$enddate = $enddate==NULL?date('Y-m-d'):filter_var($enddate,FILTER_SANITIZE_NUMBER_INT);
 		//clean up the title, to be used as filename
-		$title = substr(filter_var(str_replace(array(" ",'"',"'",',','.'),'_',trim($title)),FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW|FILTER_FLAG_STRIP_HIGH),0,20);
+		$title = preg_replace('/[^0-9a-z\_\-]/i','_',trim($title));
+		//$title = substr(filter_var(str_replace(array(" ",'"',"'",',','.'),'_',),FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW|FILTER_FLAG_STRIP_HIGH),0,20);
 		if(strlen($title)==0){
 			$title = 'untitled';
 		}
