@@ -215,7 +215,7 @@ function loadThumbs(){
 			thumbs.push({
 				loc: val.loc
 			});
-			html += '<li><div class="thumbblock"><img class="thumb" src="'+val.loc+'" data-index="'+key+'"/></div></li>';
+			html += '<li><img class="thumb" src="'+val.loc+'" data-index="'+key+'"/></li>';
 			
 		});
 	}else{
@@ -228,7 +228,7 @@ function loadThumbs(){
 				thumbs.push({
 					loc: val
 				});
-				html += '<li><div class="thumbblock"><img class="thumb" src="'+val+'" /></div></li>';
+				html += '<li><img class="thumb" src="'+val+'" /></li>';
 			});
 		});
 	}
