@@ -23,7 +23,7 @@ foreach($filenames as $filename){
 		if($diff < 0){
 			//date is smaller than today
 			//delete poster
-			print("to be deleted");
+			print(" <b>Deleted</b>");
 			deletePoster($filename);
 		}
 }

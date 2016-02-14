@@ -95,9 +95,11 @@ if($_GET['Thor']=='gaaf'){
 					$ass = 'ieee';	
 				}elseif(stripos($title,'waldur') !== false){
 					$ass = 'waldur';
-				}else{
+				}elseif(stripos($title,'thor') !== false){
 					$ass = 'thor';
-				}		
+				}else{
+					$ass = 'gen';
+				}
 				
 				//turn this objects data to an array
 				$object = array("tit" => $title, "ass" => $ass, "loc" => $location, "sta" => $start, "end" => $end, "ald" => $allday);
