@@ -40,6 +40,10 @@ Other variables, don't change these!
 var posterOnlyMode;
 //variable to hold array of posters
 var thumbslider;
+
+//counter of number of pixels the sliderbar has slided
+var amountSlided=0;
+
 //arrays for the variable objects
 var posters = [];
 var thumbs = [];
@@ -116,7 +120,14 @@ function updatePoster(posterNr){
 	
 	//change posters in the bottom if they are used instead of sponsor logo's
 	if(postersInsteadOfSponsors && !posterOnlyMode){
-		thumbslider.goToSlide(posterNr);
+		//thumbslider.goToSlide(posterNr);
+		/*
+		slide to the location of this image + the location of the previous image. 
+		This works because UL is set to position absolute.
+		If this is the first image it will be left aligned. Otherwise it is the second image in the row.
+		*/
+		var width = -1* ($($("li")[n]).position().left + n>0?$($("li")[n-1]).position().left:0);
+		$("ul#thumblist").css("transform","translateX("+width+"px)");
 	}
 
 	//console.log('updatePoster poster '+posterNr+' complete');
@@ -233,7 +244,7 @@ function loadThumbs(){
 		});
 	}
 	$("#thumblist").html(html);
-	thumbslider.refresh();
+	//thumbslider.refresh();
 	//if(thumbslider){thumbslider.destroy();}
 	//thumbslider = $("#thumbcontainer").lightSlider(settings);
 	//console.log('loadThumbs complete');
@@ -311,7 +322,7 @@ $(function(){
 		}
 		//update the date every minute. This is not for the clock, only the date
 		window.setInterval(function(){ updateDateTime(); },60*1000);
-		
+		/*
 		//settings for the slider
 		if(postersInsteadOfSponsors){
 			settings = {
@@ -334,14 +345,14 @@ $(function(){
 			};
 		}
 		//make the thumbslider
-		thumbslider = $("#thumblist").lightSlider(settings);
+//		thumbslider = $("#thumblist").lightSlider(settings);
 		
 		//refresh the thumbslider after (approximately) all images are loaded, so it adjusts to the image width
 		//and switch to the first poster
-		setTimeout(function(){
+	/*	setTimeout(function(){
 			thumbslider.refresh();
 			updatePoster(0);
-		}, 5000);
+		}, 5000);*/
 	}
 	//console.log('init complete');
 });

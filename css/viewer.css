@@ -207,9 +207,22 @@ div#thumbcontainer{
 	right:10px;
 	bottom:10px;
 	position:absolute;
+	overflow:hidden;
+}
+ul{
+	list-style:none;
+	margin:0px; /* to override the browser default margin and padding for a UL*/
+	padding:0px;
+	position:absolute; /*such that jquery calculates the thumblocations relative to this UL*/
+	display: flex; /*to make the box as wide as needed to fit all thumbs in one row*/
+ 	transition: 1s ease-in-out; /*to make the sliding transition animate*/
+}
+li{
+	display: inline-block; /*To keep all images on one row without using float:left*/
 }
 img.thumb{ /* a sponsor image*/
 	max-height:99%;
+	margin-right:10px; /*all other margins are handled by #thumbcontainer*/
 }
 
 /*sidebar contains clock and activities*/
