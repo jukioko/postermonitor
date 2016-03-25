@@ -40,10 +40,6 @@ Other variables, don't change these!
 var posterOnlyMode;
 //variable to hold array of posters
 var thumbslider;
-
-//counter of number of pixels the sliderbar has slided
-var amountSlided=0;
-
 //arrays for the variable objects
 var posters = [];
 var thumbs = [];
@@ -57,7 +53,7 @@ var daysOfWeek = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']; //weeks start at s
 var daysOfWeekFull = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
-3/********************/
+/********************/
 /*     posters      */
 /********************/ 
 
@@ -67,57 +63,27 @@ function updatePosters(){
 		loadPosters();
 	}else{
 		l = posters.length;
+		o = n;
 		n = (((n+1)%l)+l)%l;
 		//reload array if end is reached. Array will be reloaded before the next poster has to be loaded.
 		if( n == 0 ){
 			//reload posters at end of cycle if posterReloadTime is false.
 			if(posterReloadTime == false) {loadPosters()}
 		}
-		updatePoster(n);
+		updatePoster(n,o);
 	}
 	//console.log('updatePosters complete (auto)');
 }
 
 //go to poster 'n'. n should be a valid number*/
-function updatePoster(posterNr){
+function updatePoster(nextPoster,currentPoster){
 	//update the poster number n global (if not done so yet)
-	n = posterNr;
-	var	poster = posters[posterNr];
-	
-	//old jquery animation system, no longer used.
-	//go to next poster
-	//animate and set width/heigth correct (scaling)
-	//$("#posterview1").animate({
-	//	opacity: 0
-	//},posterRefreshAnimation/2,'',function(){
-	
-	//		$("#posterview1").animate({
-//			opacity: 1
-//			},posterRefreshAnimation/2,'');
-//	});
-	
-	//what to do when fadeout is finished
-	var fadeOutFunc = function(e) { 
-   		//console.log("fin fadeout");
-		//replace poster
-   		$("#posterview1").css('background-image','url("'+poster.loc+'")');
-   		$("#posterview1").removeClass("fadeOut");
-		//fade in the poster
-		$("#posterview1").addClass("fadeIn");
-		//remove this event
-		$(this).unbind(e);
-	}
-	
-	//remove the previous classes
-	$("#posterview1").removeClass("fadeIn");
-	
-	//event handler for fadeout completed
-	//oanimationend webkitAnimationEnd
-	$("#posterview1").bind('animationend', fadeOutFunc);
-	
-	//actually fadeout the image
-	$("#posterview1").addClass("fadeOut");
-	
+	n = nextPoster;
+	var	poster = posters[nextPoster];
+
+	$($("div#posterview1 > img")[currentPoster]).removeClass("fadeIn").addClass("fadeOut");
+	$($("div#posterview1 > img")[nextPoster]).removeClass("fadeOut").addClass("fadeIn");
+
 	//change posters in the bottom if they are used instead of sponsor logo's
 	if(postersInsteadOfSponsors && !posterOnlyMode){
 		//thumbslider.goToSlide(posterNr);
@@ -126,8 +92,8 @@ function updatePoster(posterNr){
 		This works because UL is set to position absolute.
 		If this is the first image it will be left aligned. Otherwise it is the second image in the row.
 		*/
-		var width = -1* ($($("li")[n]).position().left + n>0?$($("li")[n-1]).position().left:0);
-		$("ul#thumblist").css("transform","translateX("+width+"px)");
+		var width = -1* ($($("img.thumb")[n]).position().left + n>0?$($("img.thumb")[n-1]).position().left:0);
+		$("div#thumblist").css("transform","translateX("+width+"px)");
 	}
 
 	//console.log('updatePoster poster '+posterNr+' complete');
@@ -140,6 +106,7 @@ function loadPosters(){
 	$.getJSON('load_filenames.php', {Thor:"gaaf",type:"posters"} , function (data){
 		//empty old array
 		posters = [];
+		var html = '';
 		//fill array poster by poster
 		$.each(data, function(key, val){
 			loc = val;
@@ -147,18 +114,55 @@ function loadPosters(){
 				posters.push({
 					loc: loc
 				});
+			html += '<img class="imgPoster" src="'+val+'" />';
 		});
+		$("div#posterview1").html(html);
+		//make the first one active
+		$($("div#posterview1 > img")[0]).addClass("fadeIn");
 		if(postersInsteadOfSponsors && !posterOnlyMode){
 			loadThumbs();		
 		}
 	});
 	//console.log('loadPosters complete');
 }
+/********************/
+/*     bottom-bar   */
+/********************/ 
+
+//load the thumbs, either sponsors or postersthumbs
+function loadThumbs(){
+	thumbs = [];
+	var html = '';
+	if(postersInsteadOfSponsors){
+		$.each(posters, function(key, val){
+			//var thisposter = new thumb(val.loc);
+			thumbs.push({
+				loc: val.loc
+			});
+			html += '<img class="thumb" src="'+val.loc+'" data-index="'+(key)+'"/>';
+			
+		});
+	}else{
+		//update the array containing the sponsor objects
+		$.getJSON('load_filenames.php',{Thor:"gaaf",type:"sponsors"}, function (data){
+			//fill array sponsor by sponsor
+			$.each(data, function(key, val){
+				//console.log(key,val);
+				//var thissponsor = new thumb(val);
+				thumbs.push({
+					loc: val
+				});
+				html += '<img class="thumb" src="'+val+'" />';
+			});
+		});
+	}
+	$("#thumblist").html(html);
+}
+
 
 /********************/
 /*     activities   */
 /********************/ 
-
 //update the list of activities
 function updateActivities(){
 	var html = '';
@@ -212,43 +216,6 @@ function loadActivities(){
 	//console.log('loadActivities complete');
 }
 
-/********************/
-/*     bottom-bar   */
-/********************/ 
-
-//load the thumbs, either sponsors or postersthumbs
-function loadThumbs(){
-	thumbs = [];
-	var html = '';
-	if(postersInsteadOfSponsors){
-		$.each(posters, function(key, val){
-			//var thisposter = new thumb(val.loc);
-			thumbs.push({
-				loc: val.loc
-			});
-			html += '<li><img class="thumb" src="'+val.loc+'" data-index="'+key+'"/></li>';
-			
-		});
-	}else{
-		//update the array containing the sponsor objects
-		$.getJSON('load_filenames.php',{Thor:"gaaf",type:"sponsors"}, function (data){
-			//fill array sponsor by sponsor
-			$.each(data, function(key, val){
-				//console.log(key,val);
-				//var thissponsor = new thumb(val);
-				thumbs.push({
-					loc: val
-				});
-				html += '<li><img class="thumb" src="'+val+'" /></li>';
-			});
-		});
-	}
-	$("#thumblist").html(html);
-	//thumbslider.refresh();
-	//if(thumbslider){thumbslider.destroy();}
-	//thumbslider = $("#thumbcontainer").lightSlider(settings);
-	//console.log('loadThumbs complete');
-}
 
 /*****************/
 /* Date and Time */
@@ -288,12 +255,14 @@ $(function(){
 	document.addEventListener('keydown', function(event) {
 		l = posters.length;
 		if(event.keyCode == 37) {
+			var o = n;
 			n = (((n-1)%l)+l)%l;
-			updatePoster(n);
+			updatePoster(n,o);
 		}
 		else if(event.keyCode == 39) {
+			var o = n;
 			n = (((n+1)%l)+l)%l;
-			updatePoster(n);
+			updatePoster(n,o);
 		}
 	});
 	
@@ -303,7 +272,7 @@ $(function(){
 		clicknr = $(event.target).data('index');
 		if(isFinite(clicknr) && clicknr<posters.length){
 			//console.log(clicknr);
-			updatePoster(clicknr);
+			updatePoster(clicknr,n);
 		}
 	});
 
@@ -322,37 +291,6 @@ $(function(){
 		}
 		//update the date every minute. This is not for the clock, only the date
 		window.setInterval(function(){ updateDateTime(); },60*1000);
-		/*
-		//settings for the slider
-		if(postersInsteadOfSponsors){
-			settings = {
-				autoWidth: true,
-				controls: false,
-				pager: false,
-				loop: true,
-				auto: false
-			//	gallery:true
-			};
-		}else{
-			settings = {
-				autoWidth: true,
-				controls: false,
-				gallery: true,
-				loop: true,
-				auto: true,
-				pause: sponsorChangeTime*1000,
-				pager: false
-			};
-		}
-		//make the thumbslider
-//		thumbslider = $("#thumblist").lightSlider(settings);
-		
-		//refresh the thumbslider after (approximately) all images are loaded, so it adjusts to the image width
-		//and switch to the first poster
-	/*	setTimeout(function(){
-			thumbslider.refresh();
-			updatePoster(0);
-		}, 5000);*/
 	}
 	//console.log('init complete');
 });
