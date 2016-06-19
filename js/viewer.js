@@ -79,11 +79,9 @@ function updatePosters(){
 function updatePoster(nextPoster,currentPoster){
 	//update the poster number n global (if not done so yet)
 	n = nextPoster;
-	var	poster = posters[nextPoster];
-
-	$($("div#posterview1 > img")[currentPoster]).removeClass("fadeIn").addClass("fadeOut");
-	$($("div#posterview1 > img")[nextPoster]).removeClass("fadeOut").addClass("fadeIn");
-
+	//var	poster = posters[nextPoster];
+	$(document.getElementsByClassName('imgPoster')[currentPoster]).removeClass("fadeIn").addClass("fadeOut");
+	$(document.getElementsByClassName('imgPoster')[nextPoster]).removeClass("fadeOut").addClass("fadeIn");
 	//change posters in the bottom if they are used instead of sponsor logo's
 	if(postersInsteadOfSponsors && !posterOnlyMode){
 		//thumbslider.goToSlide(posterNr);
@@ -92,38 +90,39 @@ function updatePoster(nextPoster,currentPoster){
 		This works because UL is set to position absolute.
 		If this is the first image it will be left aligned. Otherwise it is the second image in the row.
 		*/
-		var width = -1* ($($("img.thumb")[n]).position().left + n>0?$($("img.thumb")[n-1]).position().left:0);
+		var thumbs = document.getElementsByClassName('thumb');
+		var width = -1* ($(thumbs[nextPoster]).position().left + nextPoster>0?$(thumbs[nextPoster-1]).position().left:0);
 		$("div#thumblist").css("transform","translateX("+width+"px)");
 	}
-
-	//console.log('updatePoster poster '+posterNr+' complete');
 }
 
 //load the list of posters from the server
 function loadPosters(){
 	//update the array containing the poster objects
-	//console.log('update');
 	$.getJSON('load_filenames.php', {Thor:"gaaf",type:"posters"} , function (data){
 		//empty old array
 		posters = [];
 		var html = '';
 		//fill array poster by poster
-		$.each(data, function(key, val){
-			loc = val;
+		var l = data.length;
+		var i=0;
+		var loc;
+		for(i;i<l;i++){
+			loc = data[i];
 			ext = loc.split('.').pop();
 				posters.push({
 					loc: loc
 				});
-			html += '<img class="imgPoster" src="'+val+'" />';
-		});
-		$("div#posterview1").html(html);
+			html += '<img class="imgPoster" src="'+data[i]+'" />';
+		}
+		document.getElementById('posterview1').innerHTML = html;
 		//make the first one active
-		$($("div#posterview1 > img")[0]).addClass("fadeIn");
+		$(document.getElementsByClassName('imgPoster')[0]).addClass("fadeIn");
+		//$($("div#posterview1 > img")[0]).addClass("fadeIn");
 		if(postersInsteadOfSponsors && !posterOnlyMode){
 			loadThumbs();		
 		}
 	});
-	//console.log('loadPosters complete');
 }
 /********************/
 /*     bottom-bar   */
@@ -134,29 +133,33 @@ function loadThumbs(){
 	thumbs = [];
 	var html = '';
 	if(postersInsteadOfSponsors){
-		$.each(posters, function(key, val){
-			//var thisposter = new thumb(val.loc);
+		var l=posters.length;
+		var i=0;
+		var val;
+		for(i;i<l;i++){
+			val=posters[i].loc;
 			thumbs.push({
-				loc: val.loc
+				loc: val
 			});
-			html += '<img class="thumb" src="'+val.loc+'" data-index="'+(key)+'"/>';
-			
-		});
+			html += '<img class="thumb" src="'+val+'" data-index="'+(i)+'"/>';
+		}
 	}else{
 		//update the array containing the sponsor objects
 		$.getJSON('load_filenames.php',{Thor:"gaaf",type:"sponsors"}, function (data){
 			//fill array sponsor by sponsor
-			$.each(data, function(key, val){
-				//console.log(key,val);
-				//var thissponsor = new thumb(val);
+			var l=data.length;
+			var i=0;
+			var val;
+			for(i;i<l;i++){
+				val = data[i];
 				thumbs.push({
 					loc: val
 				});
 				html += '<img class="thumb" src="'+val+'" />';
-			});
+			}
 		});
 	}
-	$("#thumblist").html(html);
+	document.getElementById("thumblist").innerHTML = html;
 }
 
 
@@ -189,9 +192,9 @@ function updateActivities(){
 			}
 			html += '</h3></div>';
 		}
-		$("#activitiesContainer").html(html);
+//		$("#activitiesContainer").html(html);
+		document.getElementById('activitiesContainer').innerHTML = html
 	}
-	//console.log('updateActivities complete');
 }
 
 //load the activities from the thor-sharepoint (sites.ele.tue.nl)
@@ -201,26 +204,28 @@ function loadActivities(){
 		//empty old array
 		activities = [];
 		//fill array poster by poster
-		$.each(data, function(key, val){
+		var l = data.length;
+		var i=0;
+		var val;
+		for(i;i<l;i++){
 			//var thisactivity = new activity(val);
+			val = data[i];
 			val.sta = new Date((val.sta*1000));
 			val.end = new Date((val.end*1000));
-	
 			activities.push(val);
-		});
+		}
 		//sort the activities by start date
 		activities.sort(function(a,b){return a.sta-b.sta});
 		//show the activities
 		updateActivities();
 	});
-	//console.log('loadActivities complete');
 }
 
 
 /*****************/
 /* Date and Time */
 /*****************/
-
+/*
 function updateDateTime(){
 	var d = new Date();
 	var date = d.getDate()+' '+months[d.getMonth()];
@@ -232,13 +237,12 @@ function updateDateTime(){
 	$("#date").text(date);	
 	$("#day").text(day);
 }
-
+*/
 
 //execute functions periodically and once at startup
 $(function(){
 	//var posteronlymode enabled
-	posterOnlyMode = ($("#thumbcontainer").length)?false:true;
-
+	posterOnlyMode = (document.getElementById("thumbcontainer")==null)?true:false;
 
 	loadPosters();
 	//shift the posterarray, and switch the bottom bar with small posters if it is used.
@@ -267,6 +271,15 @@ $(function(){
 	});
 	
 	//click or touch on bottom row posterthumbs
+	document.getElementById('thumbbar').onclick=function(event){
+		//n is a global. Don't use it for possible undefined values
+		var clicknr = event.target.dataset.index-'0'; //convert number-string to int.
+		if(isFinite(clicknr) && clicknr<posters.length){
+			//console.log(clicknr);
+			updatePoster(clicknr,n);
+		}
+	}
+	/*
 	$("#thumbbar").on("click",function(event){
 		//n is a global. Don't use it for possible undefined values
 		clicknr = $(event.target).data('index');
@@ -274,12 +287,13 @@ $(function(){
 			//console.log(clicknr);
 			updatePoster(clicknr,n);
 		}
-	});
+		return false;
+	});*/
 
 	//timers and calls that are not needed in posteronly mode
 	if(!posterOnlyMode){
 		loadActivities();
-		updateDateTime();
+		//updateDateTime(); //replace by buienradar widget
 		
 		//refresh the sponsors if they are enabled
 		if(sponsorReloadTime && !postersInsteadOfSponsors){
@@ -290,7 +304,8 @@ $(function(){
 			window.setInterval(function(){ loadActivities(); },activityReloadTime*1000);
 		}
 		//update the date every minute. This is not for the clock, only the date
-		window.setInterval(function(){ updateDateTime(); },60*1000);
+		//this is replaced by buienradar widget
+		//window.setInterval(function(){ updateDateTime(); },60*1000);
 	}
 	//console.log('init complete');
 });

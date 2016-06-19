@@ -25,11 +25,11 @@ body{
 /****************************************/
 
 .fadeIn{
-	animation: fadeInFromNone 1s;
+	animation: fadeInFromNone 0.2s steps(2, end);
 	animation-fill-mode: forwards;  
 }
 .fadeOut{
-	animation: fadeOutFromNone 1s;
+	animation: fadeOutFromNone 0.2s steps(2,end);
 	animation-fill-mode: forwards;  
 }
 
