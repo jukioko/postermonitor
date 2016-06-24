@@ -59,11 +59,12 @@ var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov',
 
 //change poster, function is called every 'posterReloadTime'
 function updatePosters(){
-	if(posters.length == 0){
+	var l = posters.length;
+	if(l == 0){
 		loadPosters();
 	}else{
-		l = posters.length;
-		o = n;
+		var o = n; //o is the number of the previous poster.
+		//this 'n' is a global. The number of the current displayed poster
 		n = (((n+1)%l)+l)%l;
 		//reload array if end is reached. Array will be reloaded before the next poster has to be loaded.
 		if( n == 0 ){
@@ -72,7 +73,6 @@ function updatePosters(){
 		}
 		updatePoster(n,o);
 	}
-	//console.log('updatePosters complete (auto)');
 }
 
 //go to poster 'n'. n should be a valid number*/
@@ -84,15 +84,15 @@ function updatePoster(nextPoster,currentPoster){
 	$(document.getElementsByClassName('imgPoster')[nextPoster]).removeClass("fadeOut").addClass("fadeIn");
 	//change posters in the bottom if they are used instead of sponsor logo's
 	if(postersInsteadOfSponsors && !posterOnlyMode){
-		//thumbslider.goToSlide(posterNr);
 		/*
 		slide to the location of this image + the location of the previous image. 
 		This works because UL is set to position absolute.
 		If this is the first image it will be left aligned. Otherwise it is the second image in the row.
 		*/
 		var thumbs = document.getElementsByClassName('thumb');
-		var width = -1* ($(thumbs[nextPoster]).position().left + nextPoster>0?$(thumbs[nextPoster-1]).position().left:0);
-		$("div#thumblist").css("transform","translateX("+width+"px)");
+		var width = -1* ((thumbs[nextPoster]).offsetLeft + nextPoster>0?thumbs[nextPoster-1].offsetLeft:0);
+		//slide the thumblist.
+		document.getElementById('thumblist').style.transform = "translateX("+width+"px)";
 	}
 }
 
@@ -118,7 +118,6 @@ function loadPosters(){
 		document.getElementById('posterview1').innerHTML = html;
 		//make the first one active
 		$(document.getElementsByClassName('imgPoster')[0]).addClass("fadeIn");
-		//$($("div#posterview1 > img")[0]).addClass("fadeIn");
 		if(postersInsteadOfSponsors && !posterOnlyMode){
 			loadThumbs();		
 		}
@@ -192,7 +191,6 @@ function updateActivities(){
 			}
 			html += '</h3></div>';
 		}
-//		$("#activitiesContainer").html(html);
 		document.getElementById('activitiesContainer').innerHTML = html
 	}
 }
@@ -240,7 +238,7 @@ function updateDateTime(){
 */
 
 //execute functions periodically and once at startup
-$(function(){
+window.onload = function(){
 	//var posteronlymode enabled
 	posterOnlyMode = (document.getElementById("thumbcontainer")==null)?true:false;
 
@@ -275,25 +273,14 @@ $(function(){
 		//n is a global. Don't use it for possible undefined values
 		var clicknr = event.target.dataset.index-'0'; //convert number-string to int.
 		if(isFinite(clicknr) && clicknr<posters.length){
-			//console.log(clicknr);
 			updatePoster(clicknr,n);
 		}
 	}
-	/*
-	$("#thumbbar").on("click",function(event){
-		//n is a global. Don't use it for possible undefined values
-		clicknr = $(event.target).data('index');
-		if(isFinite(clicknr) && clicknr<posters.length){
-			//console.log(clicknr);
-			updatePoster(clicknr,n);
-		}
-		return false;
-	});*/
 
 	//timers and calls that are not needed in posteronly mode
 	if(!posterOnlyMode){
 		loadActivities();
-		//updateDateTime(); //replace by buienradar widget
+		//updateDateTime(); //replaced by buienradar widget
 		
 		//refresh the sponsors if they are enabled
 		if(sponsorReloadTime && !postersInsteadOfSponsors){
@@ -306,6 +293,8 @@ $(function(){
 		//update the date every minute. This is not for the clock, only the date
 		//this is replaced by buienradar widget
 		//window.setInterval(function(){ updateDateTime(); },60*1000);
+		
+		//start the clock. This calls the script in clock.js
+		initClock();
 	}
-	//console.log('init complete');
-});
+}

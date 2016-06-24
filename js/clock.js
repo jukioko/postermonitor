@@ -5,7 +5,7 @@
 var canvas, ctx, radius, img;
 
 function initClock(){
- canvas = $('#clock')[0];
+ canvas = document.getElementById('clock');
  ctx = canvas.getContext("2d");
  ctx.imageSmoothingEnabled = true;
  radius = canvas.height / 2;
@@ -101,8 +101,3 @@ function drawFace(ctx, radius) {
          ctx.rotate(-ang);
     }
  }
- 
-//start updating on load
-$(function() {
-	initClock();
-});

@@ -289,3 +289,7 @@ div.activity.thor > h2{
 	/*color: rgb(190,151,4);*/
 	color: #ac2121;/* the official waldur color*/
 }
+/*odin activity*/
+div.activity.odin > h2{
+	color: #221F72;
+}
