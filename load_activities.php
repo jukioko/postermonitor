@@ -15,7 +15,7 @@ $lastModFile = 'lastmod.dt';
 if(file_exists($lastModFile)){
 	$lastMod = file_get_contents($lastModFile);
 	if((time() - $lastMod) > (60*5)){
-		$useCache = false;	
+		$useCache = false;
 	}else{
 		$useCache = true;
 	}
@@ -26,12 +26,12 @@ if(file_exists($lastModFile)){
 //A small GET check just for fun.
 if($_GET['Thor']=='gaaf'){
 	//update cache file
-	if($useCache!=true || !file_exists($cacheFile)){ 
+	if($useCache!=true || !file_exists($cacheFile)){
 		//Open the html calendar page using php-CURL
 		$url = "https://sites.ee.tue.nl/studentenverenigingen/thor/Lists/Calendar/MyItems.aspx";
 		$user_agent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.2) Gecko/20090729 Firefox/3.5.2 GTB5";
 		$curl = curl_init();
-		curl_setopt_array($curl, array(    
+		curl_setopt_array($curl, array(
 			CURLOPT_URL => $url,
 			CURLOPT_HEADER => true,
 			CURLOPT_RETURNTRANSFER => true,
@@ -55,17 +55,19 @@ if($_GET['Thor']=='gaaf'){
 		//=============================================================
 		$ret = curl_exec($ch);
 		curl_close($curl);
-	
-		
-		//parse the incoming file as HTML
+
+
+		//parse the incoming file as HTML, don't log the errors.
 		$dom = new DOMDocument();
+		libxml_use_internal_errors(true);
 		$dom->loadHTML($ret);
+		libxml_clear_errors();
 		//each calendaritem has its own table row (tr)
 		$trs = $dom->getElementsByTagName('tr');
-		
+
 		//in the sharepoint webinterface can be set how many events are shown on one page,
 		// this is also the amount of events you get here, and so the amount of events this script returns
-		
+
 		//loop through all table entries to find all events
 		foreach($trs as $tr){
 			//All tr with class 'itmhover' are actual events, the others are just for layout.
@@ -74,7 +76,7 @@ if($_GET['Thor']=='gaaf'){
 				//4th TD contains the title
 				$title = $tds->item(4)->nodeValue;
 				$title = trim(iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $title));
-	
+
 				//skip all options and intern activities. If title starts with [option] [optie] [internal] [intern] or so
 				if(substr(strtolower($title),0,4) === "[opt" || substr(strtolower($title),0,4) === "[int"){
 					continue;
@@ -84,15 +86,15 @@ if($_GET['Thor']=='gaaf'){
 				$start = $tds->item(6)->nodeValue?strtotime($tds->item(6)->nodeValue):false;
 				$end = $tds->item(7)->nodeValue?strtotime($tds->item(7)->nodeValue):false;
 				$allday = strlen($tds->item(8)->nodeValue)>1?true:false;
-			
+
 				if($end < time()){
 					//event already finished
 					continue;
 				}
-			
+
 				//give classes according to association
 				if(stripos($title,'ieee') !== false){
-					$ass = 'ieee';	
+					$ass = 'ieee';
 				}elseif(stripos($title,'waldur') !== false){
 					$ass = 'waldur';
 				}elseif(stripos($title,'odin') !== false){
@@ -102,7 +104,7 @@ if($_GET['Thor']=='gaaf'){
 				}else{
 					$ass = 'gen';
 				}
-				
+
 				//turn this objects data to an array
 				$object = array("tit" => $title, "ass" => $ass, "loc" => $location, "sta" => $start, "end" => $end, "ald" => $allday);
 			}else{
@@ -113,9 +115,9 @@ if($_GET['Thor']=='gaaf'){
 			$output[] = $object;
 		}
 		$json = json_encode($output);
-		
-		$handle1 = fopen($cacheFile, 'w') or die("can't open file");		
-		$handle2 = fopen($lastModFile, 'w') or die("can't open file");		
+
+		$handle1 = fopen($cacheFile, 'w') or die("can't open file");
+		$handle2 = fopen($lastModFile, 'w') or die("can't open file");
 		if($handle1 && $handle2){
 			fwrite($handle1, $json);
 			fwrite($handle2, time());
@@ -127,15 +129,15 @@ if($_GET['Thor']=='gaaf'){
 	//use the cachefile
 	}else{
 		if(file_exists($cacheFile)){
-			$json = file_get_contents($cacheFile);	
+			$json = file_get_contents($cacheFile);
 		}else{
 			print('Cache file reading failed');
 		}
 	}
-	
+
 	//finally print the event data as json
 	print($json);
-	
+
 }else{
 	print("You are not allowed to view this page");
 }
