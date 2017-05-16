@@ -1,4 +1,4 @@
-<?
+<?php
 /*
 Jeroen van Oorschot 2015
 e.t.s.v. Thor Eindhoven posterviewer

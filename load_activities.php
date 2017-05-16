@@ -99,6 +99,8 @@ if($_GET['Thor']=='gaaf'){
 					$ass = 'waldur';
 				}elseif(stripos($title,'odin') !== false){
 					$ass = 'odin';
+				}elseif(stripos($title,'[eir') !== false){
+					$ass = 'eir';
 				}elseif((stripos($title,'thor') || stripos($title,'acci') || stripos($title,'ivaldi') || stripos($title,'kvasir')) !== false){
 					$ass = 'thor';
 				}else{

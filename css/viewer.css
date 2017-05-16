@@ -293,3 +293,7 @@ div.activity.thor > h2{
 div.activity.odin > h2{
 	color: #221F72;
 }
+/*eir activity*/
+div.activity.eir > h2{
+	color: #00a3e0;
+}
