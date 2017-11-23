@@ -297,3 +297,7 @@ div.activity.odin > h2{
 div.activity.eir > h2{
 	color: #00a3e0;
 }
+/*lustrum activity*/
+div.activity.lustrum > h2{
+	color: #70559a;
+}
