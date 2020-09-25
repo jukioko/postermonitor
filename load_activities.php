@@ -28,7 +28,7 @@ if($_GET['Thor']=='gaaf'){
 	//update cache file
 	if($useCache!=true || !file_exists($cacheFile)){
 		//Open the html calendar page using php-CURL
-		$url = "https://sites.ee.tue.nl/studentenverenigingen/thor/Lists/Calendar/MyItems.aspx";
+		$url = "https://tuenl.sharepoint.com/sites/ee_root/studentenverenigingen/thor/Lists/Calendar/calendar.aspx";
 		$user_agent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.2) Gecko/20090729 Firefox/3.5.2 GTB5";
 		$curl = curl_init();
 		curl_setopt_array($curl, array(
